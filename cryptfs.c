@@ -3679,12 +3679,14 @@ int cryptfs_changepw(int crypt_type, const char *newpw)
                        crypt_ftr.master_key,
                        &crypt_ftr)) {
         SLOGE("Error encrypting master key");
+        free(adjusted_passwd);
         return -1;
     }
 
     /* save the key */
     if (put_crypt_ftr_and_key(&crypt_ftr)) {
         SLOGE("Failed to save key");
+        free(adjusted_passwd);
         return -1;
     }
 
@@ -3706,6 +3708,7 @@ int cryptfs_changepw(int crypt_type, const char *newpw)
         }
     }
 #endif
+    free(adjusted_passwd);
     return 0;
 }
 
